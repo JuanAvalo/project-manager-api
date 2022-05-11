@@ -11,6 +11,12 @@ const create = async (name, email, password) => {
   return { user: newUser, wasCreated: wasCreated };
 };
 
+const searchOne = async (email) => {
+  const user = await db.User.findOne({ where: { email: email } });
+  return user;
+};
+
 module.exports = {
   create,
+  searchOne,
 };
