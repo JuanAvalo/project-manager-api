@@ -4,12 +4,14 @@ const errorHandler = require('./middlewares/errorHandler');
 
 //Routes
 const authRoutes = require('./routes/auth');
+const projectRoutes = require('./routes/projects');
 
 //Config
 app.use(express.json());
 
 //Endpoints
 app.use('/auth', authRoutes);
+app.use('/projects', projectRoutes);
 
 //Errors
 app.use(errorHandler);
