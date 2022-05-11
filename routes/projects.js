@@ -18,4 +18,19 @@ router.post(
   })
 );
 
+router.post(
+  '/:id/edit',
+  errorWrapper(async (req, res) => {
+    const { name, description, users, status } = req.body;
+    const { id } = req.params;
+    const updatedProject = await projectsController.edit(
+      id,
+      name,
+      description,
+      users,
+      status
+    );
+    res.status(201).json({ response: updatedProject });
+  })
+);
 module.exports = router;
