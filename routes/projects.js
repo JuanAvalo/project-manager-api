@@ -30,7 +30,16 @@ router.post(
       users,
       status
     );
-    res.status(201).json({ response: updatedProject });
+    res.status(200).json({ response: updatedProject });
+  })
+);
+
+router.delete(
+  '/:id',
+  errorWrapper(async (req, res) => {
+    const { id } = req.params;
+    const isProjectDeleted = await projectsController.eliminate(id);
+    res.status(200).json({ response: isProjectDeleted });
   })
 );
 module.exports = router;
