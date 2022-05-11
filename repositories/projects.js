@@ -60,7 +60,16 @@ const edit = async (id, name, description, users, status) => {
   }
 };
 
+const eliminate = async (id) => {
+  const isProjectDeleted = await db.Project.destroy({
+    where: { id: id },
+    cascade: true,
+  });
+  return isProjectDeleted;
+};
+
 module.exports = {
   create,
   edit,
+  eliminate,
 };
