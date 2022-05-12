@@ -4,6 +4,15 @@ const errorWrapper = require('../middlewares/errorWrapper');
 
 const projectsController = require('../controllers/projects');
 
+router.get(
+  '/',
+  errorWrapper(async (req, res) => {
+    const { page, limit } = req.body;
+    const projects = await projectsController.list(page, limit);
+    res.status(200).json(projects);
+  })
+);
+
 router.post(
   '/',
   errorWrapper(async (req, res) => {
