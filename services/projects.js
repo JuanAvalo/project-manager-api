@@ -4,7 +4,8 @@ const ResourceNotFound = require('../errors/resourceNotFound');
 const Forbidden = require('../errors/forbidden');
 
 const list = (page, limit) => {
-  if (!page || !limit) {
+  console.log(page, limit);
+  if (page === undefined || limit === undefined) {
     page = 0;
     limit = 5;
   }
