@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const errorWrapper = require('../middlewares/errorWrapper');
 const { verifyToken } = require('../middlewares/tokenHandler');
+const validate = require('../middlewares/validations/projects');
 
 const projectsController = require('../controllers/projects');
 
@@ -29,7 +30,7 @@ router.get(
 
 router.post(
   '/',
-  [verifyToken],
+  [verifyToken, validate.create],
   errorWrapper(async (req, res) => {
     const { name, description, managers, assignees, status } = req.body;
     const newProject = await projectsController.create(
@@ -45,7 +46,7 @@ router.post(
 
 router.post(
   '/:id/edit',
-  [verifyToken],
+  [verifyToken, validate.edit],
   errorWrapper(async (req, res) => {
     const { name, description, status } = req.body;
     const { id } = req.params;
@@ -61,7 +62,7 @@ router.post(
 
 router.post(
   '/:id/members',
-  [verifyToken],
+  [verifyToken, validate.addMembers],
   errorWrapper(async (req, res) => {
     const { managers, assignees } = req.body;
     const { id } = req.params;
@@ -76,7 +77,7 @@ router.post(
 
 router.delete(
   '/:id/members',
-  [verifyToken],
+  [verifyToken, validate.removeMembers],
   errorWrapper(async (req, res) => {
     const { id } = req.params;
     const { members } = req.body;

@@ -2,7 +2,7 @@ const { check } = require('express-validator');
 const errorWrapperFunction = require('.');
 
 module.exports = {
-  validateUserRegistration: [
+  register: [
     check('name').notEmpty().withMessage('User name is required'),
     check('email')
       .notEmpty()
@@ -18,6 +18,17 @@ module.exports = {
       .withMessage(
         'Password requirements:(At least 8 characters long, 1 number, 1 uppercase, 1 lowercase)'
       ),
+    errorWrapperFunction,
+  ],
+
+  login: [
+    check('email')
+      .notEmpty()
+      .withMessage('Email is required')
+      .normalizeEmail()
+      .isEmail()
+      .withMessage('Email must be valid'),
+    check('password').notEmpty().withMessage('Password is required').bail(),
     errorWrapperFunction,
   ],
 };
