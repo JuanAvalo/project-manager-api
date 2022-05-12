@@ -16,11 +16,12 @@ router.get(
 router.post(
   '/',
   errorWrapper(async (req, res) => {
-    const { name, description, users, status } = req.body;
+    const { name, description, managers, assignees, status } = req.body;
     const newProject = await projectsController.create(
       name,
       description,
-      users,
+      managers,
+      assignees,
       status
     );
     res.status(201).json({ response: newProject });
@@ -30,13 +31,12 @@ router.post(
 router.post(
   '/:id/edit',
   errorWrapper(async (req, res) => {
-    const { name, description, users, status } = req.body;
+    const { name, description, status } = req.body;
     const { id } = req.params;
     const updatedProject = await projectsController.edit(
       id,
       name,
       description,
-      users,
       status
     );
     res.status(200).json({ response: updatedProject });

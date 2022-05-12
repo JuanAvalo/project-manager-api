@@ -16,7 +16,13 @@ const searchOne = async (email) => {
   return user;
 };
 
+const searchMany = async (idList) => {
+  const users = await db.User.findAll({ where: { id: idList } });
+  return users;
+};
+
 module.exports = {
   create,
   searchOne,
+  searchMany,
 };

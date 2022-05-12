@@ -11,7 +11,7 @@ const list = async (page, limit) => {
         model: db.User,
         attributes: ['id', 'name', 'email'],
         through: {
-          attributes: ['userId', 'roleId'],
+          attributes: ['roleId'],
         },
       },
     ],
@@ -22,62 +22,25 @@ const list = async (page, limit) => {
   return projects;
 };
 
-const create = async (name, description, users, status) => {
-  const trans = await sequelize.transaction();
+const create = async (name, description, managers, assignees, status) => {
+  const newProject = await db.Project.create({
+    name,
+    description,
+    status,
+  });
 
-  try {
-    const newProject = await db.Project.create(
-      {
-        name,
-        description,
-        status,
-      },
-      { transaction: trans }
-    );
+  await newProject.addUsers(managers, { through: { roleId: 1 } });
+  await newProject.addUsers(assignees, { through: { roleId: 2 } });
 
-    //Add newProject id to users array of objects
-    users.forEach((userObject) => {
-      userObject.projectId = newProject.id;
-    });
-
-    await db.users_projects.bulkCreate(users, { transaction: trans });
-    await trans.commit();
-
-    return newProject;
-  } catch (err) {
-    await trans.rollback();
-    throw new Error(err);
-  }
+  return newProject;
 };
 
-const edit = async (id, name, description, users, status) => {
-  const trans = await sequelize.transaction();
-
-  try {
-    const updatedProject = await db.Project.update(
-      { name: name, description: description, status: status },
-      { where: { id: id } },
-      { transaction: trans }
-    );
-
-    if (!updatedProject) throw new ResourceNotFound('Project Not Found');
-
-    await db.users_projects.destroy(
-      { where: { projectId: id } },
-      { transaction: trans }
-    );
-
-    //Add newProject id to users array of objects
-    users.forEach((userObject) => {
-      userObject.projectId = id;
-    });
-    await db.users_projects.bulkCreate(users, { transaction: trans });
-    await trans.commit();
-    return updatedProject;
-  } catch (err) {
-    await trans.rollback();
-    throw new Error(err);
-  }
+const edit = async (id, name, description, status) => {
+  const updatedProject = await db.Project.update(
+    { name: name, description: description, status: status },
+    { where: { id: id } }
+  );
+  return updatedProject;
 };
 
 const eliminate = async (id) => {

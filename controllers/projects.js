@@ -5,22 +5,22 @@ const list = async (page, limit) => {
   return { message: 'List of projects', data: projects.rows };
 };
 
-const create = async (name, description, users, status) => {
+const create = async (name, description, managers, assignees, status) => {
   const newProject = await projectsService.create(
     name,
     description,
-    users,
+    managers,
+    assignees,
     status
   );
   return { message: 'Project created', data: newProject };
 };
 
-const edit = async (id, name, description, users, status) => {
+const edit = async (id, name, description, status) => {
   const updatedProject = await projectsService.edit(
     id,
     name,
     description,
-    users,
     status
   );
   return { message: 'Project updated', data: { wasUpdated: updatedProject } };

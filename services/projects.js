@@ -1,21 +1,46 @@
 const projecsRepository = require('../repositories/projects');
+const usersRepository = require('../repositories/users');
 const ResourceNotFound = require('../errors/resourceNotFound');
+const Forbidden = require('../errors/forbidden');
 
 const list = (page, limit) => {
   if (!page || !limit) {
     page = 0;
     limit = 5;
   }
-  console.log(page, limit);
   return projecsRepository.list(page, limit);
 };
 
-const create = (name, description, users, status) => {
-  return projecsRepository.create(name, description, users, status);
+const create = async (name, description, managers, assignees, status) => {
+  managers.forEach((manager) => {
+    if (assignees.indexOf(manager) > -1)
+      throw new Forbidden('Duplicated user role');
+  });
+
+  const idList = managers.concat(assignees);
+  const foundUsers = await usersRepository.searchMany(idList);
+  if (foundUsers.length === 0 || foundUsers.length < idList.length)
+    throw new ResourceNotFound('Manager or Assignee Not Found');
+
+  const managersList = foundUsers.filter(
+    (user) => managers.indexOf(user.id) > -1
+  );
+  const assigneesList = foundUsers.filter(
+    (user) => assignees.indexOf(user.id) > -1
+  );
+
+  const newProject = await projecsRepository.create(
+    name,
+    description,
+    managersList,
+    assigneesList,
+    status
+  );
+  return newProject;
 };
 
-const edit = (id, name, description, users, status) => {
-  return projecsRepository.edit(id, name, description, users, status);
+const edit = (id, name, description, status) => {
+  return projecsRepository.edit(id, name, description, status);
 };
 
 const eliminate = async (id) => {
