@@ -9,7 +9,16 @@ router.get(
   errorWrapper(async (req, res) => {
     const { page, limit } = req.body;
     const projects = await projectsController.list(page, limit);
-    res.status(200).json(projects);
+    res.status(200).json({ response: projects });
+  })
+);
+
+router.get(
+  '/:id',
+  errorWrapper(async (req, res) => {
+    const { id } = req.params;
+    const project = await projectsController.search(id);
+    res.status(200).json({ response: project });
   })
 );
 
