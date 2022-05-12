@@ -15,5 +15,8 @@ app.use('/projects', projectRoutes);
 
 //Errors
 app.use(errorHandler);
+app.use(function (req, res) {
+  res.status(404).json({ message: 'Page Not Found' });
+});
 
 app.listen(3000, () => console.log('Running'));
