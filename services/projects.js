@@ -2,13 +2,16 @@ const projecsRepository = require('../repositories/projects');
 const usersRepository = require('../repositories/users');
 const ResourceNotFound = require('../errors/resourceNotFound');
 const Forbidden = require('../errors/forbidden');
+const BadRequest = require('../errors/badRequest');
 
-const list = (page, limit, filters) => {
+const list = async (page, limit, filters) => {
   if (page === undefined || limit === undefined) {
     page = 0;
     limit = 5;
   }
-  return projecsRepository.list(page, limit, filters);
+  const projects = await projecsRepository.list(page, limit, filters);
+  if (!projects.rows.length) throw new ResourceNotFound('Projects Not Found');
+  return projects;
 };
 
 const search = async (id) => {
@@ -18,12 +21,14 @@ const search = async (id) => {
 };
 
 const create = async (name, description, managers, assignees, status) => {
-  managers.forEach((manager) => {
-    if (assignees.indexOf(manager) > -1)
-      throw new Forbidden('Duplicated user role');
-  });
-
-  const idList = managers.concat(assignees);
+  if (!name || !description || !status) throw new BadRequest('Missing fields');
+  if (managers && assignees) {
+    managers.forEach((manager) => {
+      if (assignees.indexOf(manager) > -1)
+        throw new Forbidden('Duplicated user role');
+    });
+  }
+  const idList = [...(managers || []), ...(assignees || [])];
   const foundUsers = await usersRepository.searchMany(idList);
   if (foundUsers.length === 0 || foundUsers.length < idList.length)
     throw new ResourceNotFound('Manager or Assignee Not Found');
