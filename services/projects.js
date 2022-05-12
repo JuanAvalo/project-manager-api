@@ -22,18 +22,11 @@ const create = async (name, description, managers, assignees, status) => {
   if (foundUsers.length === 0 || foundUsers.length < idList.length)
     throw new ResourceNotFound('Manager or Assignee Not Found');
 
-  const managersList = foundUsers.filter(
-    (user) => managers.indexOf(user.id) > -1
-  );
-  const assigneesList = foundUsers.filter(
-    (user) => assignees.indexOf(user.id) > -1
-  );
-
   const newProject = await projecsRepository.create(
     name,
     description,
-    managersList,
-    assigneesList,
+    managers,
+    assignees,
     status
   );
   return newProject;
@@ -41,6 +34,23 @@ const create = async (name, description, managers, assignees, status) => {
 
 const edit = (id, name, description, status) => {
   return projecsRepository.edit(id, name, description, status);
+};
+
+const addMember = async (id, managers, assignees) => {
+  if (managers && assignees) {
+    managers.forEach((manager) => {
+      if (assignees.indexOf(manager) > -1)
+        throw new Forbidden('Duplicated user role');
+    });
+  }
+
+  const idList = [...(managers || []), ...(assignees || [])];
+  const foundUsers = await usersRepository.searchMany(idList);
+  if (foundUsers.length === 0 || foundUsers.length < idList.length)
+    throw new ResourceNotFound('Manager or Assignee Not Found');
+
+  const newMembers = await projecsRepository.addMember(id, managers, assignees);
+  return newMembers;
 };
 
 const removeMember = async (id, memberId) => {
@@ -60,5 +70,6 @@ module.exports = {
   edit,
   eliminate,
   list,
+  addMember,
   removeMember,
 };

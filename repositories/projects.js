@@ -43,6 +43,13 @@ const edit = async (id, name, description, status) => {
   return updatedProject;
 };
 
+const addMember = async (id, managers, assignees) => {
+  const project = await db.Project.findByPk(id);
+  if (managers) await project.addUsers(managers, { through: { roleId: 1 } });
+  if (assignees) await project.addUsers(assignees, { through: { roleId: 2 } });
+  return project;
+};
+
 const removeMember = async (id, memberId) => {
   console.log(memberId);
   const project = await db.Project.findByPk(id);
