@@ -2,6 +2,26 @@ const db = require('../models');
 const { sequelize } = require('../models');
 const ResourceNotFound = require('../errors/resourceNotFound');
 
+const list = async (page, limit) => {
+  let offset = page * limit;
+  const projects = await db.Project.findAndCountAll({
+    attributes: ['id', 'name', 'description', 'createdAt'],
+    include: [
+      {
+        model: db.User,
+        attributes: ['id', 'name', 'email'],
+        through: {
+          attributes: ['userId', 'roleId'],
+        },
+      },
+    ],
+    limit: limit,
+    offset: offset,
+  });
+
+  return projects;
+};
+
 const create = async (name, description, users, status) => {
   const trans = await sequelize.transaction();
 
@@ -72,4 +92,5 @@ module.exports = {
   create,
   edit,
   eliminate,
+  list,
 };

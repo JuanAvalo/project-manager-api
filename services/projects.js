@@ -1,6 +1,15 @@
 const projecsRepository = require('../repositories/projects');
 const ResourceNotFound = require('../errors/resourceNotFound');
 
+const list = (page, limit) => {
+  if (!page || !limit) {
+    page = 0;
+    limit = 5;
+  }
+  console.log(page, limit);
+  return projecsRepository.list(page, limit);
+};
+
 const create = (name, description, users, status) => {
   return projecsRepository.create(name, description, users, status);
 };
@@ -19,4 +28,5 @@ module.exports = {
   create,
   edit,
   eliminate,
+  list,
 };

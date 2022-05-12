@@ -1,5 +1,10 @@
 const projectsService = require('../services/projects');
 
+const list = async (page, limit) => {
+  const projects = await projectsService.list(page, limit);
+  return { message: 'List of projects', data: projects.rows };
+};
+
 const create = async (name, description, users, status) => {
   const newProject = await projectsService.create(
     name,
@@ -30,4 +35,5 @@ module.exports = {
   create,
   edit,
   eliminate,
+  list,
 };
