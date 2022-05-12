@@ -44,6 +44,16 @@ router.post(
 );
 
 router.delete(
+  '/:id/members',
+  errorWrapper(async (req, res) => {
+    const { id } = req.params;
+    const { members } = req.body;
+    const deletedMembers = await projectsController.removeMember(id, members);
+    res.status(200).json({ response: deletedMembers });
+  })
+);
+
+router.delete(
   '/:id',
   errorWrapper(async (req, res) => {
     const { id } = req.params;
