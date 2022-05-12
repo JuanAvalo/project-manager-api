@@ -12,6 +12,12 @@ const list = (page, limit) => {
   return projecsRepository.list(page, limit);
 };
 
+const search = async (id) => {
+  const project = await projecsRepository.search(id);
+  if (!project) throw new ResourceNotFound('Project Not Found');
+  return project;
+};
+
 const create = async (name, description, managers, assignees, status) => {
   managers.forEach((manager) => {
     if (assignees.indexOf(manager) > -1)
@@ -67,10 +73,11 @@ const eliminate = async (id) => {
 };
 
 module.exports = {
+  list,
+  search,
   create,
   edit,
   eliminate,
-  list,
   addMember,
   removeMember,
 };

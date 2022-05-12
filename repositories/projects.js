@@ -22,6 +22,22 @@ const list = async (page, limit) => {
   return projects;
 };
 
+const search = async (id) => {
+  const project = await db.Project.findByPk(id, {
+    attributes: { exclude: ['deletedAt'] },
+    include: [
+      {
+        model: db.User,
+        attributes: ['id', 'name', 'email'],
+        through: {
+          attributes: ['roleId'],
+        },
+      },
+    ],
+  });
+  return project;
+};
+
 const create = async (name, description, managers, assignees, status) => {
   const newProject = await db.Project.create({
     name,
@@ -67,10 +83,11 @@ const eliminate = async (id) => {
 };
 
 module.exports = {
+  list,
+  search,
   create,
   edit,
   eliminate,
-  list,
   addMember,
   removeMember,
 };

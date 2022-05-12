@@ -5,6 +5,11 @@ const list = async (page, limit) => {
   return { message: 'List of projects', data: projects.rows };
 };
 
+const search = async (id) => {
+  const project = await projectsService.search(id);
+  return { message: 'Project Found', data: project };
+};
+
 const create = async (name, description, managers, assignees, status) => {
   const newProject = await projectsService.create(
     name,
@@ -45,10 +50,11 @@ const eliminate = async (id) => {
 };
 
 module.exports = {
+  list,
+  search,
   create,
   edit,
   eliminate,
-  list,
   addMember,
   removeMember,
 };
