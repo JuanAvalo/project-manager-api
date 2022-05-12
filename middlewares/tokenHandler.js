@@ -20,7 +20,7 @@ const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   if (!authHeader) throw new Unauthorized();
   jwt.verify(authHeader, jwtKey, function (error, decoded) {
-    if (error) return res.status(500).send({ auth: false, message: error });
+    if (error) throw new Unauthorized();
     req.user = decoded;
     next();
   });

@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const errorWrapper = require('../middlewares/errorWrapper');
+const { verifyToken } = require('../middlewares/tokenHandler');
 
 const projectsController = require('../controllers/projects');
 
 router.get(
   '/',
+  [verifyToken],
   errorWrapper(async (req, res) => {
     const { name } = req.query;
     const { page, limit } = req.body;
@@ -17,6 +19,7 @@ router.get(
 
 router.get(
   '/:id',
+  [verifyToken],
   errorWrapper(async (req, res) => {
     const { id } = req.params;
     const project = await projectsController.search(id);
@@ -26,6 +29,7 @@ router.get(
 
 router.post(
   '/',
+  [verifyToken],
   errorWrapper(async (req, res) => {
     const { name, description, managers, assignees, status } = req.body;
     const newProject = await projectsController.create(
@@ -41,6 +45,7 @@ router.post(
 
 router.post(
   '/:id/edit',
+  [verifyToken],
   errorWrapper(async (req, res) => {
     const { name, description, status } = req.body;
     const { id } = req.params;
@@ -56,6 +61,7 @@ router.post(
 
 router.post(
   '/:id/members',
+  [verifyToken],
   errorWrapper(async (req, res) => {
     const { managers, assignees } = req.body;
     const { id } = req.params;
@@ -70,6 +76,7 @@ router.post(
 
 router.delete(
   '/:id/members',
+  [verifyToken],
   errorWrapper(async (req, res) => {
     const { id } = req.params;
     const { members } = req.body;
@@ -80,6 +87,7 @@ router.delete(
 
 router.delete(
   '/:id',
+  [verifyToken],
   errorWrapper(async (req, res) => {
     const { id } = req.params;
     const isProjectDeleted = await projectsController.eliminate(id);
