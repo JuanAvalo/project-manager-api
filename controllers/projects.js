@@ -1,7 +1,7 @@
 const projectsService = require('../services/projects');
 
-const list = async (page, limit) => {
-  const projects = await projectsService.list(page, limit);
+const list = async (page, limit, filters) => {
+  const projects = await projectsService.list(page, limit, filters);
   return { message: 'List of projects', data: projects.rows };
 };
 

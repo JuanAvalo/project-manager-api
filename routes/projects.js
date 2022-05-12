@@ -7,8 +7,10 @@ const projectsController = require('../controllers/projects');
 router.get(
   '/',
   errorWrapper(async (req, res) => {
+    const { name } = req.query;
     const { page, limit } = req.body;
-    const projects = await projectsController.list(page, limit);
+    const filters = { name: name };
+    const projects = await projectsController.list(page, limit, filters);
     res.status(200).json({ response: projects });
   })
 );

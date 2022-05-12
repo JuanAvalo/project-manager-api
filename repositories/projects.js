@@ -1,10 +1,19 @@
 const db = require('../models');
 const { sequelize } = require('../models');
+const { Op } = require('sequelize');
 const ResourceNotFound = require('../errors/resourceNotFound');
 
-const list = async (page, limit) => {
+const list = async (page, limit, filters) => {
+  let formattedFilter = {};
+  if (filters.name) {
+    formattedFilter.name = {
+      [Op.like]: `%${filters.name}%`,
+    };
+  }
+
   let offset = page * limit;
   const projects = await db.Project.findAndCountAll({
+    where: formattedFilter,
     attributes: ['id', 'name', 'description', 'createdAt'],
     include: [
       {
@@ -67,7 +76,6 @@ const addMember = async (id, managers, assignees) => {
 };
 
 const removeMember = async (id, memberId) => {
-  console.log(memberId);
   const project = await db.Project.findByPk(id);
   if (!project) throw new ResourceNotFound('Project Not Found');
   const wasRemoved = await project.removeUsers(memberId);

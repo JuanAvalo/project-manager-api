@@ -3,13 +3,12 @@ const usersRepository = require('../repositories/users');
 const ResourceNotFound = require('../errors/resourceNotFound');
 const Forbidden = require('../errors/forbidden');
 
-const list = (page, limit) => {
-  console.log(page, limit);
+const list = (page, limit, filters) => {
   if (page === undefined || limit === undefined) {
     page = 0;
     limit = 5;
   }
-  return projecsRepository.list(page, limit);
+  return projecsRepository.list(page, limit, filters);
 };
 
 const search = async (id) => {
