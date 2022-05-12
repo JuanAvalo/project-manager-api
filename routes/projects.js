@@ -43,6 +43,20 @@ router.post(
   })
 );
 
+router.post(
+  '/:id/members',
+  errorWrapper(async (req, res) => {
+    const { managers, assignees } = req.body;
+    const { id } = req.params;
+    const newMembers = await projectsController.addMember(
+      id,
+      managers,
+      assignees
+    );
+    res.status(200).json({ response: newMembers });
+  })
+);
+
 router.delete(
   '/:id/members',
   errorWrapper(async (req, res) => {
