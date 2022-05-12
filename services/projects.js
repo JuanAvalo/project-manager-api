@@ -43,6 +43,12 @@ const edit = (id, name, description, status) => {
   return projecsRepository.edit(id, name, description, status);
 };
 
+const removeMember = async (id, memberId) => {
+  const wasRemoved = await projecsRepository.removeMember(id, memberId);
+  if (!wasRemoved) throw new ResourceNotFound('Member Not Found');
+  return wasRemoved;
+};
+
 const eliminate = async (id) => {
   const isProjectDeleted = await projecsRepository.eliminate(id);
   if (!isProjectDeleted) throw new ResourceNotFound('Project Not Found');
@@ -54,4 +60,5 @@ module.exports = {
   edit,
   eliminate,
   list,
+  removeMember,
 };

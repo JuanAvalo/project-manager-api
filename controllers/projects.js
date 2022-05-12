@@ -26,6 +26,11 @@ const edit = async (id, name, description, status) => {
   return { message: 'Project updated', data: { wasUpdated: updatedProject } };
 };
 
+const removeMember = async (id, memberId) => {
+  const removed = await projectsService.removeMember(id, memberId);
+  return { message: 'Members Removed', data: { wasRemoved: removed } };
+};
+
 const eliminate = async (id) => {
   const isProjectDeleted = await projectsService.eliminate(id);
   return { message: 'Project deleted', data: { wasDeleted: isProjectDeleted } };
@@ -36,4 +41,5 @@ module.exports = {
   edit,
   eliminate,
   list,
+  removeMember,
 };

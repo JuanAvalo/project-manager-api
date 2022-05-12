@@ -43,6 +43,14 @@ const edit = async (id, name, description, status) => {
   return updatedProject;
 };
 
+const removeMember = async (id, memberId) => {
+  console.log(memberId);
+  const project = await db.Project.findByPk(id);
+  if (!project) throw new ResourceNotFound('Project Not Found');
+  const wasRemoved = await project.removeUsers(memberId);
+  return wasRemoved;
+};
+
 const eliminate = async (id) => {
   const isProjectDeleted = await db.Project.destroy({
     where: { id: id },
@@ -56,4 +64,6 @@ module.exports = {
   edit,
   eliminate,
   list,
+  addMember,
+  removeMember,
 };
