@@ -4,8 +4,11 @@
   "description": "manage users and their projects",
   "main": "index.js",
   "scripts": {
+    "cleandb": "npx sequelize-cli db:migrate:undo:all --env production",
+    "migratedb": "npx sequelize-cli db:migrate --env production",
+    "seeddb": "npx sequelize-cli db:seed:all --env production",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx sequelize-cli db:migrate --env production",
+    "build": "npm run -s cleandb && npm run -s migratedb && npm run -s seeddb",
     "start": "node index.js",
     "run": "nodemon index.js"
   },
