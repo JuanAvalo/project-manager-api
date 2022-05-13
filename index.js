@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const errorHandler = require('./middlewares/errorHandler');
+require('dotenv').config();
 //Docs
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
@@ -24,4 +25,4 @@ app.use(function (req, res) {
   res.status(404).json({ message: 'Page Not Found' });
 });
 
-app.listen(3000, () => console.log('Running'));
+app.listen(process.env.PORT, () => console.log('Running'));
