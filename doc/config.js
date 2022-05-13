@@ -1,4 +1,5 @@
 const path = require('path');
+require('dotenv').config();
 
 swaggerSpec = {
   definition: {
@@ -28,7 +29,7 @@ swaggerSpec = {
     ],
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: process.env.URL,
       },
     ],
   },
