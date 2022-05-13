@@ -74,7 +74,7 @@ module.exports = {
               },
               {
                 userId: 4,
-                projectId: 1,
+                projectId: 6,
                 roleId: 1,
                 createdAt: new Date(),
                 updatedAt: new Date(),

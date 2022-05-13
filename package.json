@@ -4,7 +4,7 @@
   "description": "manage users and their projects",
   "main": "index.js",
   "scripts": {
-    "cleandb": "npx sequelize-cli db:migrate:undo:all --env production",
+    "cleandb": "npx sequelize-cli db:drop --env production && npx sequelize-cli db:create --env production",
     "migratedb": "npx sequelize-cli db:migrate --env production",
     "seeddb": "npx sequelize-cli db:seed:all --env production",
     "test": "echo \"Error: no test specified\" && exit 1",
