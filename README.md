@@ -32,8 +32,8 @@ Alternatively, to get a local copy up and running follow these simple steps.
 
 1. Clone the repository
    ```sh
-   git clone https://github.com/JuanAvalo/mechanical-service-api
-   cd mechanical-service-api
+   git clone https://github.com/JuanAvalo/project-manager-api
+   cd project-manager-api
    ```
 2. Install dependencies
    ```sh
@@ -46,8 +46,8 @@ Alternatively, to get a local copy up and running follow these simple steps.
 	    DB_PASSWORD= 	'YOUR MYSQL DB PASSWORD',
 	    DB_NAME= 		'YOUR MYSQL DB NAME',
 	    DB_HOST= 		'YOUR MYSQL DB HOST'
-	    PORT= 			'YOUR SERVER APP PORT'
-	    URL= 			'YOUR SERVER URL (e.g. http://localhost:3000)'
+	    PORT= 		'YOUR SERVER APP PORT'
+	    URL= 		'YOUR SERVER URL (e.g. http://localhost:3000)'
 	    JWT_KEY= 		'YOUR SECRET PASSPHRASE FOR TOKEN GENERATION'
 		
    ```  

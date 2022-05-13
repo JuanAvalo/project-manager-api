@@ -110,6 +110,7 @@
  * /projects:
  *  post:
  *      summary: Create a new project
+ *      description: Create a new project including its members, all fields are mandatory.
  *      tags: [Project]
  *      requestBody:
  *         required: true
@@ -133,6 +134,7 @@
  * /projects/{id}/edit:
  *  post:
  *      summary: Edit details of an existing project
+ *      description: Modify name, description or status of a project, but not its members. Fields are optional.
  *      tags: [Project]
  *      parameters:
  *        - in: path
@@ -163,6 +165,7 @@
  * /projects/{id}/members:
  *  post:
  *      summary: Add members to a project, as manager o assignee
+ *      description: You can add managers o assignees independently.
  *      tags: [Project]
  *      parameters:
  *        - in: path
@@ -233,6 +236,7 @@
  * /projects/{id}/members:
  *  delete:
  *      summary: Remove members from a project
+ *      description: Remove both managers and assignees from a project by id.
  *      tags: [Project]
  *      parameters:
  *        - in: path
@@ -261,7 +265,7 @@
  * @swagger
  * /projects/{id}:
  *  delete:
- *      summary: Remove members from a project
+ *      summary: Remove a project
  *      tags: [Project]
  *      parameters:
  *        - in: path
